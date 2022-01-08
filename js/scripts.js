@@ -1,14 +1,42 @@
+var scene = {
+  objects: [
+    { type: "earth",
+      x: 280,
+      y: 180,
+      width: 50,
+      height: 50
+    },
+    { type: "asteroid",
+      x: 450,
+      y: 130,
+      width: 30,
+      height: 30,
+      direction: 135
+    },
+  ]
+}
+
 document.onreadystatechange = function () {
    if (document.readyState == "complete") {
      // document is ready. Do your stuff here
     var space = document.getElementById("space");
      makeDraggable(space);
-     earth = makeEarth(280, 180);
-     asteroid = makeAsteroid(450, 130);
-     arrow = makeArrow(440,145, 180, 40);
-     space.appendChild(earth);
-     space.appendChild(asteroid);
-     space.append(arrow);
+     scene.objects.forEach( function(obj) {
+        switch(obj.type) {
+          case "earth":
+            earth = makeEarth(obj.x, obj.y, obj.width, obj.height);
+            space.appendChild(earth);
+            break;
+          case "asteroid":
+            asteroid = makeAsteroid(obj.x, obj.y, obj.width, obj.height);
+            space.appendChild(asteroid);
+            var arrowX = obj.x + obj.width/2 + 1*obj.width*Math.cos(obj.direction * Math.PI /180);
+            var arrowY = obj.y + obj.height/2 - 1*obj.height*Math.sin(obj.direction * Math.PI / 180);
+            arrow = makeArrow(arrowX, arrowY, obj.direction, 40);
+            space.append(arrow);
+            break;
+        }
+     });
    }
  }
 
@@ -26,11 +54,16 @@ function makeArrow(x, y, angle, length) {
     points = points + xv+","+yv+" ";
   };
   var arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-  var p = ["", [0,5], [0,-5], [-40, -5], [-40, -15], [-60,0], [-40, 15], [-40, 5]];
+  var p = ["", [0,5], [0,-5], [40, -5], [40, -15], [60,0], [40, 15], [40, 5]];
   p.forEach(function(elmt) {
     if (typeof(elmt) != 'string') {
-      elmt[0] += x;
-      elmt[1] += y;
+      console.log(elmt);
+      var radang = -angle * Math.PI/180;
+      var dx = elmt[0]*Math.cos(radang) - elmt[1]*Math.sin(radang);
+      var dy = elmt[0]*Math.sin(radang) + elmt[1]*Math.cos(radang);
+      elmt[0] = x + dx;
+      elmt[1] = y + dy;
+      console.log(elmt);
     }
   
   });
@@ -46,21 +79,21 @@ function makeArrow(x, y, angle, length) {
 
 }
 
-function makeAsteroid(x,y) {
+function makeAsteroid(x,y,w,h) {
    var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
    image.setAttribute('href', "./asteroid.png");
-   image.setAttribute('width', 30);
-   image.setAttribute('height', 30);
+   image.setAttribute('width', w);
+   image.setAttribute('height', h);
    image.setAttribute('x', x);
    image.setAttribute('y', y);
    return image;
 
 }
-function makeEarth(x,y) {
+function makeEarth(x,y, w, h) {
    var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
    image.setAttribute('href', "./3dglobe.png");
-   image.setAttribute('width', 50);
-   image.setAttribute('height', 50);
+   image.setAttribute('width', w);
+   image.setAttribute('height', h);
    image.setAttribute('x', x);
    image.setAttribute('y', y);
    return image;

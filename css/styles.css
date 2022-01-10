@@ -8,11 +8,19 @@ div.container {
   margin: 20px
 }
 
-#arrow {
+div#mouse-values {
+  margin: 20px;
+}
+
+div#mouse-values input {
+  width: 50px;
+}
+
+polygon.arrow {
   fill:#0a0;
   stroke:purple;
   stroke-width:2;
 }
-#arrow:hover {
+polygon.arrow:hover {
   fill: yellow;
 }

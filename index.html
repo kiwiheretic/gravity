@@ -27,9 +27,23 @@
   <!-- your content here... -->
   <h1>Journey into the world of gravity</h1>
   <div class="container">
-    <div style="background-color:black; width: min-content;">
-      <svg id="space" width="600" height="400" xmlns="http://www.w3.org/2000/svg" onload="makeDraggable(evt)">
-      </svg>
+    <div class="left-region">
+      <div style="background-color:black; width: min-content;">
+        <svg id="space" width="600" height="400" xmlns="http://www.w3.org/2000/svg" onload="makeDraggable(evt)">
+        </svg>
+      </div>
+      <div id="mouse-values">
+         <label for="x">X</label>
+         <input name="x" type="text" value="">
+         <label for="y">Y</label>
+         <input name="y" type="text" value="">
+         <label for="angle">Angle</label>
+         <input name="angle" type="text" value="">
+         <label for="currx">curr-X</label>
+         <input name="currx" type="text" value="">
+         <label for="curry">curr-Y</label>
+         <input name="curry" type="text" value="">
+      </div>
     </div>
     <div class="details">
     <h3>Calculation</h3>

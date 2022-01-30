@@ -8,6 +8,20 @@ div.container {
   margin: 20px
 }
 
+div.objects {
+  margin: 10px 0;
+}
+
+div.objects div.box {
+  border:3px dashed grey;
+  width: 60px;
+  background-color: black;
+}
+
+
+div.objects div.box img {
+  width: 50px;
+}
 div#mouse-values {
   margin: 20px;
 }

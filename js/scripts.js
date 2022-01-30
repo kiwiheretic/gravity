@@ -125,6 +125,7 @@ function makeDraggable(svg) {
   var clickX,ClickY;
   var angleChange;
   var attachedObj = null;
+  var initialR = null;
 
   function startDrag(evt) {
     if (evt.target.classList.contains('draggable')) {
@@ -134,6 +135,10 @@ function makeDraggable(svg) {
       if (selectedElement.classList.contains("arrow")) {
         var attachedObj = getObjectArrowAttachedTo (selectedElement);
         angleChange = attachedObj.direction;
+        var dx = clickX - attachedObj.x;
+        var dy = clickY - attachedObj.y;
+        initalR = Math.sqrt(dx*dx + dy*dy);
+        document.getElementsByName("R")[0].value=parseInt(initialR);
       }
     }
   }
@@ -157,10 +162,17 @@ function makeDraggable(svg) {
         var mag1 = 1; //Math.sqrt( (clickX-cx)**2 + (clickY-cy)**2) ;
         var mag2 = Math.sqrt( (evt.offsetX - cx)**2 + (evt.offsetY - cy)**2);
         angleChange = Math.acos(dotProduct/(mag1 * mag2)); // radians
+        // The dotProduct above doesn't distinquish between clockwise
+        // or counter clockwise rotation so we have to fudge it using
+        // the Y coordinate position 
         if (evt.offsetY > cy) angleChange = 2*Math.PI - angleChange;
 
         document.getElementsByName("angle")[0].setAttribute("value",parseInt(angleChange*180/Math.PI));
-        var arrowAbsPoints = arrowPoints.map( ([x,y]) => [x+cx+arrowOffset*attachedObj.width, y+cy]);
+        var dx = evt.offsetX - attachedObj.x;
+        var dy = evt.offsetY - attachedObj.y;
+        var R = Math.sqrt(dx*dx + dy*dy);
+        document.getElementsByName("R")[0].value = parseInt(R);
+        var arrowAbsPoints = arrowPoints.map( ([x,y]) => [parseInt(.02*R*x+cx+arrowOffset*attachedObj.width), y+cy]);
         var newpoints = stringifyPoints(rotatePoints(arrowAbsPoints, [cx, cy], -angleChange));
         console.log(newpoints);
         selectedElement.setAttributeNS(null, "points", newpoints);

@@ -20,10 +20,25 @@ const arrowOffset = 0.5;  // .5 * width of anchored object
 
 
 const arrowPoints = [ [0,5], [0,-5], [40, -5], [40, -15], [60,0], [40, 15], [40, 5]];
+
+var draggedObject = null;
+
+
+function doesPointCollide(x,y,box) {
+    return !(x < box.left || x > box.right || y > box.bottom || y < box.top)
+}
+function renderCanvas (canvas) {
+  var ctx = canvas.getContext("2d");
+  var img = document.querySelector("img[alt='asteroid']");
+  ctx.drawImage(img, 10, 10, 25, 25);
+}
+
 document.onreadystatechange = function () {
    if (document.readyState == "complete") {
      // document is ready. Do your stuff here
-    var space = document.getElementById("space");
+     var canvas = document.getElementById("universe");
+     renderCanvas(canvas);
+     var space = document.getElementById("space");
      makeDraggable(space);
      scene.objects.forEach( function(obj) {
         switch(obj.type) {
@@ -41,9 +56,37 @@ document.onreadystatechange = function () {
             space.append(arrow);
             break;
         }
+     });  // forEach
+
+     var objblock = document.getElementById("object-block-1");
+     objblock.addEventListener("dragstart", function(evt) {
+       draggedObject = evt.target;
+     
      });
-   }
- }
+     objblock.addEventListener("dragend", function(evt) {
+        var x = evt.clientX;
+        var y = evt.clientY;
+        var src = draggedObject.getBoundingClientRect();
+        console.log([x,y]);
+        var space = document.getElementById("space");
+        var tgt = space.getBoundingClientRect();
+        if (doesPointCollide(x,y,tgt)) {
+          //asteroid = makeAsteroid(x, y, 50, 50);
+          //space.appendChild(asteroid);
+        }
+     });
+     objblock.addEventListener("drag", function(evt) {
+        var space = document.getElementById("space");
+        var rect = space.getBoundingClientRect();
+        var src = draggedObject.getBoundingClientRect();
+        var x = (src.x - rect.x) + evt.clientX;
+        var y = (src.y + rect.y) + evt.clientY;
+        document.getElementsByName("drag-x")[0].value = parseInt(x);
+        document.getElementsByName("drag-y")[0].value = parseInt(y);
+     
+     });
+   } // document readyState
+ } // onReadyStateChange
 
 function rotatePoints ( points, centre, radang) {
   var [cx,cy] = centre;
@@ -83,11 +126,11 @@ function makeArrow(x, y, angle, length) {
 
 function makeAsteroid(x,y,w,h) {
    var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-   image.setAttribute('href', "./asteroid.png");
-   image.setAttribute('width', w);
-   image.setAttribute('height', h);
-   image.setAttribute('x', x);
-   image.setAttribute('y', y);
+   image.setAttributeNS(null, 'href', "./asteroid.png");
+   image.setAttributeNS(null, 'width', w);
+   image.setAttributeNS(null, 'height', h);
+   image.setAttributeNS(null, 'x', x);
+   image.setAttributeNS(null, 'y', y);
    return image;
 
 }
@@ -185,9 +228,10 @@ function makeDraggable(svg) {
   }
   
   function endDrag(evt) {
-    selectedElement = false;
     if (attachedObj) attachedObj.direction = angleChange;
     attachedObj = null;
+    draggedObject = null;
+    selectedElement = false;
   }
 
 }

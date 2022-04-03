@@ -2,6 +2,12 @@ h1 {
   text-align: center;
 }
 
+canvas {
+  border: 1px solid grey;
+  width: 600px;
+  background-color: black;
+}
+
 div.container {
   display: flex;
   gap: 20px;

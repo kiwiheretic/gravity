@@ -28,31 +28,34 @@
   <h1>Journey into the world of gravity</h1>
   <div class="container">
     <div class="left-region">
-      <div style="background-color:black; width: min-content;">
-        <svg id="space" width="600" height="400" xmlns="http://www.w3.org/2000/svg" onload="makeDraggable(evt)">
-        </svg>
+      <div class="canvas">
+        <canvas id="universe">
+        </canvas>
       </div>
-      <div class="objects">
+      <div id="object-block-2" class="objects">
         <div class="box">
-          <img src="asteroid.png" alt="">
+          <img src="asteroid.png" draggable="true" alt="asteroid">
         </div>
       
       </div>
-      <div id="mouse-values">
-         <label for="x">X</label>
-         <input name="x" type="text" value="">
-         <label for="y">Y</label>
-         <input name="y" type="text" value="">
-         <label for="angle">Angle</label>
-         <input name="angle" type="text" value="">
-         <label for="R">R</label>
-         <input name="R" type="text" value="">
-      </div>
     </div>
-    <div class="details">
-    <h3>Calculation</h3>
     </div>
   </div>
-  <script src="js/scripts.js"></script>
+  <script src="js/canvas-utils.js"></script>
+  <script>
+    document.onreadystatechange = function () {
+       if (document.readyState === "complete") {
+         var dragged;
+         var universe = new Universe(document.querySelector("canvas#universe"));
+         
+         var imgs = document.querySelectorAll("img[draggable='true']");
+         imgs.forEach( function (elmt) {
+           var obj = new DraggableObject(elmt);
+           universe.add(obj);
+         });
+       }
+    }
+
+  </script>
 </body>
 </html>

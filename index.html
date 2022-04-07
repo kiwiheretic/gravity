@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Gravity</title>
+  <title>Drag and Drop Practice </title>
   <meta name="description" content="A simple HTML5 Template for new projects.">
   <meta name="author" content="KiwiHeretic">
 
@@ -25,7 +25,7 @@
 
 <body>
   <!-- your content here... -->
-  <h1>Journey into the world of gravity</h1>
+  <h1>Learning to do drag and drop in javascript</h1>
   <div class="container">
     <div class="left-region">
       <div class="canvas">
@@ -34,7 +34,10 @@
       </div>
       <div id="object-block-2" class="objects">
         <div class="box">
+          <span class="object" draggable="true">O</span>
+          <!--
           <img src="asteroid.png" draggable="true" alt="asteroid">
+          -->
         </div>
       
       </div>
@@ -48,7 +51,8 @@
          var dragged;
          var universe = new Universe(document.querySelector("canvas#universe"));
          
-         var imgs = document.querySelectorAll("img[draggable='true']");
+         //var imgs = document.querySelectorAll("img[draggable='true']");
+         var imgs = document.querySelectorAll("div.box span.object");
          imgs.forEach( function (elmt) {
            var obj = new DraggableObject(elmt);
            universe.add(obj);

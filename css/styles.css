@@ -24,6 +24,10 @@ div.objects div.box {
   background-color: black;
 }
 
+div.box span.object {
+  color: white;
+  font-size: 32px;
+}
 
 div.objects div.box img {
   width: 50px;
